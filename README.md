@@ -12,3 +12,7 @@ The Arduino serial loopback Sketch. The Arduino device requires a Bluetooth adap
 
 
 Note: This IS NOT a Windows Remote Arduino activity.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/djaus2/https-iotbluetoothserial/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
