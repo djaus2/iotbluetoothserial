@@ -1,4 +1,4 @@
-# https-iotbluetoothserial
+iotbluetoothserial
 IoT Core Generic Bluetooth Serial Universal Windows App
 
 
