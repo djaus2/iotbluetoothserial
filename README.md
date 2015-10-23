@@ -6,7 +6,7 @@ Project Description
 
  Universal Win App that runs on Windows 10, including IoT Core (eg Raspberry PI2) that connects to an embedded, eg Arduino, device over Bluetooth Serial.
 
- There are two projects: The Universal Windows App that requires Windows 10 and Visual Studio 2015 RTM. Requires a generic Bluetooth dongle. I use a very old CSR V1.1 version
+ There are two projects: The Universal Windows App that requires Windows 10 and Visual Studio 2015 RTM. Requires a generic Bluetooth dongle. I use a very old CSR V1.1 version .. but it works!
 
 The Arduino serial loopback Sketch. 
 
