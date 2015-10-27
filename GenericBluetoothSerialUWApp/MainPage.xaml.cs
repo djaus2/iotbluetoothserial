@@ -20,6 +20,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text;
 
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -27,11 +28,17 @@ using System.Threading;
 namespace GenericBluetoothSerialUWApp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The Main Page for the app
     /// </summary>
     public sealed partial class MainPage : Page
     {
         string Title = "Generic Bluetooth Serial Universal Windows App";
+        private Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService _service;
+        private StreamSocket _socket;
+        private DataWriter dataWriterObject;
+        private DataReader dataReaderObject;
+        ObservableCollection<PairedDeviceInfo> _pairedDevices;
+        private CancellationTokenSource ReadCancellationTokenSource;
 
 
         public MainPage()
@@ -40,23 +47,9 @@ namespace GenericBluetoothSerialUWApp
             MyTitle.Text = Title;
             InitializeRfcommDeviceService();
         }
-        private void OnConnectionEstablished()
-        {
-
-
-        }
-
-        private Windows.Devices.Bluetooth.Rfcomm.RfcommDeviceService _service;
-        private StreamSocket _socket;
-        private DataWriter _writer;
-
-        ObservableCollection<PairedDeviceInfo> _pairedDevices;
-
 
 
         async void InitializeRfcommDeviceService()
-
-
         {
             try
             {
@@ -93,7 +86,11 @@ namespace GenericBluetoothSerialUWApp
 
         async private void ConnectDevice_Click(object sender, RoutedEventArgs e)
         {
-            DeviceInformation DeviceInfo = await DeviceInformation.CreateFromIdAsync(this.TxtBlock_SelectedID.Text);
+            //Revision: No need to requery for Device Information as we alraedy have it:
+            DeviceInformation DeviceInfo; // = await DeviceInformation.CreateFromIdAsync(this.TxtBlock_SelectedID.Text);
+            PairedDeviceInfo pairedDevice = (PairedDeviceInfo)ConnectDevices.SelectedItem;
+            DeviceInfo = pairedDevice.DeviceInfo;
+
             bool success = true;
             try
             {
@@ -145,16 +142,16 @@ namespace GenericBluetoothSerialUWApp
         {
             PairedDeviceInfo pairedDevice = (PairedDeviceInfo)ConnectDevices.SelectedItem;
             this.TxtBlock_SelectedID.Text = pairedDevice.ID;
-            this.textBlockName.Text = pairedDevice.Name;
+            this.textBlockBTName.Text = pairedDevice.Name;
             ConnectDevice_Click(sender, e);
         }
 
-        Windows.Storage.Streams.Buffer InBuff;
-        Windows.Storage.Streams.Buffer OutBuff;
+        //Windows.Storage.Streams.Buffer InBuff;
+        //Windows.Storage.Streams.Buffer OutBuff;
         //private StreamSocket _socket;
         private async void button_Click(object sender, RoutedEventArgs e)
         {
-            OutBuff = new Windows.Storage.Streams.Buffer(100);
+            //OutBuff = new Windows.Storage.Streams.Buffer(100);
             Button button = (Button)sender;
             if (button != null)
             {
@@ -164,7 +161,7 @@ namespace GenericBluetoothSerialUWApp
                         await this._socket.CancelIOAsync();
                         _socket.Dispose();
                         _socket = null;
-                        this.textBlockName.Text = "";
+                        this.textBlockBTName.Text = "";
                         this.TxtBlock_SelectedID.Text = "";
                         this.buttonDisconnect.IsEnabled = false;
                         this.buttonSend.IsEnabled = false;
@@ -195,7 +192,8 @@ namespace GenericBluetoothSerialUWApp
                 }
             }
         }
-        DataWriter dataWriteObject;
+
+
         public async void Send(string msg)
         {
             try
@@ -203,9 +201,7 @@ namespace GenericBluetoothSerialUWApp
                 if (_socket.OutputStream != null)
                 {
                     // Create the DataWriter object and attach to OutputStream
-                    dataWriteObject = new DataWriter(_socket.OutputStream);
-
-                    dataWriteObject.WriteString(msg);
+                    dataWriterObject = new DataWriter(_socket.OutputStream);
 
                     //Launch the WriteAsync task to perform the write
                     await WriteAsync(msg);
@@ -218,14 +214,15 @@ namespace GenericBluetoothSerialUWApp
             catch (Exception ex)
             {
                 //status.Text = "Send(): " + ex.Message;
+                System.Diagnostics.Debug.WriteLine("Send(): " + ex.Message);
             }
             finally
             {
                 // Cleanup once complete
-                if (dataWriteObject != null)
+                if (dataWriterObject != null)
                 {
-                    dataWriteObject.DetachStream();
-                    dataWriteObject = null;
+                    dataWriterObject.DetachStream();
+                    dataWriterObject = null;
                 }
             }
         }
@@ -244,21 +241,19 @@ namespace GenericBluetoothSerialUWApp
             //if (msg.sendText.Text.Length != 0)
             {
                 // Load the text from the sendText input text box to the dataWriter object
-                dataWriteObject.WriteString(msg);
-                //dataWriteObject.WriteString(sendText.Text);
-
+                dataWriterObject.WriteString(msg);
+                
                 // Launch an async task to complete the write operation
-                storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
+                storeAsyncTask = dataWriterObject.StoreAsync().AsTask();
 
                 UInt32 bytesWritten = await storeAsyncTask;
                 if (bytesWritten > 0)
                 {
                     string status_Text = msg + ", ";
-                    //status.Text = sendText.Text + ", ";
-                    status_Text += "bytes written successfully!";
+                    status_Text += bytesWritten.ToString();
+                    status_Text += " bytes written successfully!";
                     System.Diagnostics.Debug.WriteLine(status_Text);
                 }
-                //sendText.Text = "";
             }
             else
             {
@@ -267,8 +262,7 @@ namespace GenericBluetoothSerialUWApp
             }
         }
 
-        DataReader dataReaderObject;
-        private CancellationTokenSource ReadCancellationTokenSource;
+  
 
         /// <summary>
         /// - Create a DataReader object
@@ -291,7 +285,6 @@ namespace GenericBluetoothSerialUWApp
                     {                 
                         await ReadAsync(ReadCancellationTokenSource.Token);
                     }
-                    //this.buttonStopRecv.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -300,7 +293,7 @@ namespace GenericBluetoothSerialUWApp
                 this.buttonStartRecv.IsEnabled = false;
                 this.buttonSend.IsEnabled = false;
                 this.buttonDisconnect.IsEnabled = false;
-                this.textBlockName.Text = "";
+                this.textBlockBTName.Text = "";
                 this.TxtBlock_SelectedID.Text = "";
                 if (ex.GetType().Name == "TaskCanceledException")
                 {
@@ -406,10 +399,8 @@ namespace GenericBluetoothSerialUWApp
             internal PairedDeviceInfo(DeviceInformation deviceInfo)
             {
                 this.DeviceInfo = deviceInfo;
-
                 this.ID = this.DeviceInfo.Id;
                 this.Name = this.DeviceInfo.Name;
-
             }
 
             public string Name { get; private set; }

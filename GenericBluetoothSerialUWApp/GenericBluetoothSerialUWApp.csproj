@@ -7,8 +7,8 @@
     <ProjectGuid>{CCD27A13-68E5-4F71-B606-C3C14B294042}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bluetooth2</RootNamespace>
-    <AssemblyName>Bluetooth2</AssemblyName>
+    <RootNamespace>GenericBluetoothSerialUWApp</RootNamespace>
+    <AssemblyName>GenericBluetoothSerialUWApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -105,7 +105,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="GenericBluetoothSerialUWApp.pfx" />
+    <None Include="Bluetooth2_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />

@@ -30,8 +30,8 @@
                     <TextBlock x:Name="TxtBlock_SelectedID" HorizontalAlignment="Left" Height="25" Margin="10" TextWrapping="Wrap" Text="Id" VerticalAlignment="Top" Width="956"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="Name" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="Wrap" Text="Name: " VerticalAlignment="Top" Width="50"/>
-                    <TextBlock x:Name="textBlockName" HorizontalAlignment="Left" Height="35" Margin="10,10,0,10" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="1004" ToolTipService.ToolTip=""/>
+                    <TextBlock x:Name="BTName" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="Wrap" Text="Name: " VerticalAlignment="Top" Width="50"/>
+                    <TextBlock x:Name="textBlockBTName" HorizontalAlignment="Left" Height="35" Margin="10,10,0,10" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="1004" ToolTipService.ToolTip=""/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
