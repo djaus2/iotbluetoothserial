@@ -2,7 +2,7 @@ iotbluetoothserial
 IoT Core Generic Bluetooth Serial Universal Windows App
 
 Updates:
-- Version 1.1 One bug fix (was writing send twice), one code improvement (menu returns DeviceInformation so no need to relookup).
+- Version 1.2 One bug fix (was writing send twice), one code improvement (menu returns DeviceInformation so no need to relookup).
 
 
 Project Description
