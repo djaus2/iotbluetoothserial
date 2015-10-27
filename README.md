@@ -13,7 +13,7 @@ Project Description
 
 The Arduino serial loopback Sketch. 
 
-The Arduino device requires a Bluetooth adapter connected to pins 0 and 1 as the code uses the Serial class. I used a Sparkfun Sparkfun Bluetooth Mate Gold as in  Windows-10-IoT-Windows-Remote-Arduino-and-Universal-Windows-Platform (See http://embedded101.com/Blogs/David-Jones/entryid/636/Windows-10-IoT-Windows-Remote-Arduino-and-Universal-Windows-Platform-Apps)
+The Arduino device requires a Bluetooth adapter connected to pins 0 and 1 as the code uses the Serial class. I used a Sparkfun Bluetooth Mate Gold as in  Windows-10-IoT-Windows-Remote-Arduino-and-Universal-Windows-Platform (See http://embedded101.com/Blogs/David-Jones/entryid/636/Windows-10-IoT-Windows-Remote-Arduino-and-Universal-Windows-Platform-Apps)
 
 
 Note: This IS NOT a Windows Remote Arduino activity.+  
